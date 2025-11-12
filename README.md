@@ -1,2 +1,75 @@
-☕ CoffeeLink: Plataforma de Café Artesanal¡Bienvenido a CoffeeLink! Esta es una aplicación de comercio electrónico especializada en café premium. El sistema está compuesto por tres servicios (API-Core, BFF y Frontend) que deben correr simultáneamente.🚀 1. Requisitos de InstalaciónPara ejecutar la aplicación localmente, asegúrate de tener instalado:Java Development Kit (JDK) 17 o superior.Node.js y npm (o Yarn) para el Frontend.PostgreSQL como sistema de base de datos.🛠️ 2. Guía de Configuración y ArranqueDebes iniciar tres componentes en el siguiente orden:Paso A: Base de Datos (PostgreSQL)Crea la Base de Datos: Crea una base de datos llamada coffeelink_db.Activa la Extensión (Búsqueda de Tildes): Ejecuta el siguiente comando SQL para que la búsqueda en el catálogo funcione correctamente con y sin tildes:SQLCREATE EXTENSION IF NOT EXISTS unaccent;
-Carga Inicial de Datos: Ejecuta el script coffeelink-api-core/database-scripts/V1__init.sql para crear las tablas e insertar los usuarios de prueba.Paso B: Iniciar Servicios de BackendAbre dos terminales separadas para iniciar los servicios Java (API-Core y BFF) usando el Maven Wrapper (./mvnw).ServicioUbicación de la CarpetaComando de InicioPuertoAPI-Core (Cerebro)coffeelink-api-core./mvnw spring-boot:run8080BFF (Seguridad)coffeelink-bff./mvnw spring-boot:run8081Paso C: Iniciar el Frontend (Interfaz Web)Abre una tercera terminal, ve a la carpeta coffeelink-frontend y ejecuta:Instalar dependencias: npm installIniciar la App: npm startLa aplicación se abrirá en tu navegador en http://localhost:3000.👤 3. Cuentas de Prueba y FuncionalidadEl sistema incluye dos roles precargados en la base de datos:RolEmailContraseñaPermisosAdminadmin@coffeelink.com123456Gestión de productos (CRUD) y acceso a /admin.Clientecliente@coffeelink.com123456Navegación, carrito de compras y realizar pedidos.Flujo A: Cliente (Comprar)Regístrate o Ingresa: Usa la cuenta de prueba cliente@coffeelink.com.Catálogo: Utiliza la barra de búsqueda. La búsqueda es insensible a tildes y mayúsculas/minúsculas.Carrito de Compras:Añadir: El botón "Agregar al Carrito" añade el producto a tu sesión.Resumen: El total y la cantidad de ítems se muestran en el Navbar.Gestionar (en /carrito): Puedes usar los botones + / - para modificar la cantidad (respetando el stock) y el botón de la papelera para eliminar productos.Seguridad: El carrito se vacía automáticamente al cerrar la sesión.Flujo B: Administrador (Gestionar Inventario)Ingresa: Usa la cuenta de prueba admin@coffeelink.com.Acceso Admin: El enlace "Admin" aparecerá en el menú. Haz clic para ir al panel.Gestión (CRUD):Crear/Editar: Usa el formulario para actualizar o crear productos. El sistema aplica validaciones (precio > 0, stock >= 0).Eliminar: El botón "Eliminar" remueve el producto del catálogo.Restricción: El administrador no puede agregar productos al carrito.
+# ☕ CoffeeLink: Plataforma de Café Artesanal
+
+¡Bienvenido a CoffeeLink! Esta es una aplicación de comercio electrónico especializada en café premium. El sistema está compuesto por tres servicios (API-Core, BFF y Frontend) que deben correr simultáneamente.
+
+---
+
+## 🚀 1. Requisitos de Instalación
+
+Para ejecutar la aplicación localmente, asegúrate de tener instalado:
+
+| Requisito | Propósito | Versión Requerida (Mínima) |
+| :--- | :--- | :--- |
+| **Java Development Kit (JDK)** | Ejecutar los servicios de backend (API-Core y BFF). | JDK 17 o superior |
+| **Node.js y npm** | Ejecutar la interfaz web (Frontend). | Node.js (Recomendado v14 o superior) |
+| **PostgreSQL** | Base de datos para almacenar usuarios, productos y pedidos. | PostgreSQL (v10+) |
+
+---
+
+## 🛠️ 2. Guía de Configuración y Arranque
+
+Debes iniciar tres componentes en el siguiente orden.
+
+### Paso A: Base de Datos (PostgreSQL)
+
+1.  **Crea la Base de Datos:** Crea una base de datos llamada **`coffeelink_db`**.
+2.  **Activa la Extensión (Búsqueda de Tildes):** Ejecuta el siguiente comando SQL para que la búsqueda en el catálogo funcione correctamente:
+    ```sql
+    CREATE EXTENSION IF NOT EXISTS unaccent;
+    ```
+3.  **Carga Inicial de Datos:** Ejecuta el script `coffeelink-api-core/database-scripts/V1__init.sql` para crear las tablas e insertar los usuarios de prueba.
+
+### Paso B: Iniciar Servicios de Backend
+
+Abre **dos terminales** separadas para iniciar los servicios Java (API-Core y BFF).
+
+| Servicio | Ubicación de la Carpeta | Comando de Inicio | Puerto |
+| :--- | :--- | :--- | :--- |
+| **API-Core** (Cerebro) | `coffeelink-api-core` | `./mvnw spring-boot:run` | 8080 |
+| **BFF** (Seguridad) | `coffeelink-bff` | `./mvnw spring-boot:run` | 8081 |
+
+### Paso C: Iniciar el Frontend (Interfaz Web)
+
+Abre una **tercera terminal**, ve a la carpeta `coffeelink-frontend` y ejecuta:
+
+1.  **Instalar dependencias:** `npm install`
+2.  **Iniciar la App:** `npm start`
+
+La aplicación se abrirá en tu navegador en **`http://localhost:3000`**.
+
+---
+
+## 👤 3. Cuentas de Prueba y Funcionalidad
+
+El sistema utiliza dos roles principales, cada uno con permisos diferentes:
+
+| Rol | Email | Contraseña | Permisos |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@coffeelink.com` | `123456` | Gestión de productos (CRUD) y acceso a `/admin`. |
+| **Cliente** | `cliente@coffeelink.com` | `123456` | Navegación, carrito de compras y realizar pedidos. |
+
+### Flujo A: Cliente (Comprar)
+
+1.  **Registro e Ingreso:** Crea tu cuenta o usa la de prueba (`cliente@coffeelink.com`).
+2.  **Catálogo:** La búsqueda es **insensible a tildes y mayúsculas/minúsculas**.
+3.  **Carrito de Compras:**
+    * **Añadir:** El botón **"Agregar al Carrito"** añade el producto a tu sesión.
+    * **Resumen y Total:** El total de artículos y el precio acumulado se muestran en el Navbar.
+    * **Gestionar (en `/carrito`):** Puedes usar los botones `+` / `-` para cambiar la cantidad (respetando el stock) y el botón de la papelera para eliminar productos.
+    * **Seguridad:** El carrito se vacía automáticamente al cerrar la sesión.
+
+### Flujo B: Administrador (Gestionar Inventario)
+
+1.  **Ingresa:** Usa la cuenta de prueba (`admin@coffeelink.com`).
+2.  **Acceso Admin:** El enlace **"Admin"** aparecerá en el menú.
+3.  **Gestión (CRUD):** Usa el formulario para crear/editar productos, o el botón **"Eliminar"** de la tabla.
